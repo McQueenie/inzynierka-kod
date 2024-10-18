@@ -20,11 +20,11 @@ def resize_images():
         for file in files:
             raw_file_path = os.path.join(root, file)
             preprocessed_file_path = os.path.join(PROCESSED_DATA_DIR, os.path.relpath(raw_file_path, RAW_DATA_DIR))
-            print(preprocessed_file_path)
+            preprocessed_file_path = os.path.splitext(preprocessed_file_path)[0] + '.png'
             try:
                 with Image.open(raw_file_path) as img:
                     img = img.resize((256, 256), Image.LANCZOS)
-                    img.save(preprocessed_file_path, 'PNG')
+                    img.save(preprocessed_file_path)
             except IOError:
                 print("Error file not a photo. File skipped: ", file)
         
