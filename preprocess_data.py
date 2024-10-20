@@ -10,7 +10,8 @@ if not os.path.exists(RAW_DATA_DIR):
 if not os.path.exists(PROCESSED_DATA_DIR):
     os.makedirs(PROCESSED_DATA_DIR)
 
-def resize_images():
+def resize_images(RAW_DATA_DIR=RAW_DATA_DIR, PROCESSED_DATA_DIR=PROCESSED_DATA_DIR):
+    i = 0
     for root, dirs, files in os.walk(RAW_DATA_DIR):
         for dir in dirs:
             preprocessed_data_dir = os.path.join(PROCESSED_DATA_DIR, os.path.relpath(os.path.join(root, dir), RAW_DATA_DIR))
@@ -25,7 +26,13 @@ def resize_images():
                 with Image.open(raw_file_path) as img:
                     img = img.resize((256, 256), Image.LANCZOS)
                     img.save(preprocessed_file_path)
+                    i += 1
+
+                    if i % 100 == 0:
+                        print("Processed files: ", i)
+
             except IOError:
                 print("Error file not a photo. File skipped: ", file)
-        
+    
+    print("Finished processing files. Processed files: ", i)
 resize_images()
